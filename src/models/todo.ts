@@ -5,7 +5,7 @@ export class Todo extends ParkaModel {
 
   public static jsonSchema = {
     type: 'object',
-    required: ['title', 'desription'],
+    required: ['title', 'description'],
     properties: {
       id: { type: 'integer' },
       title: { type: 'string', maxLength: 30 },
