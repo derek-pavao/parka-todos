@@ -1,13 +1,13 @@
-import { ParkaApp } from 'parka';
-import { ApplicationConfig } from './application-config';
-import { TodoResource } from './resources/todo-resource';
+import {Application, ParkaApp} from "parka";
+import {ApplicationConfig} from "./application-config";
+import {TodoResource} from "./resources/todo-resource";
+import {TodoService} from './services/todo-service';
 
-export class Application extends ParkaApp<ApplicationConfig> {
-
-  public onBeforeApplicationStart() {
-    this.registerResource(TodoResource)
-  }
-
+@Application({
+  providers: [TodoService],
+  resources: [TodoResource]
+})
+export class App extends ParkaApp<ApplicationConfig> {
 }
 
-export const app = new Application(ApplicationConfig);
+export const app = new App(ApplicationConfig);

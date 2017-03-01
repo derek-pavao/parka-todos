@@ -1,27 +1,26 @@
-import { Path, PathParam, DELETE, GET, PUT, POST, RequestBody} from 'parka';
-import * as objection from 'objection';
-
-import { Todo } from '../models/todo';
+import {Path, PathParam, DELETE, GET, PUT, POST, RequestBody} from "parka";
+import {Todo} from "../models/todo";
+import {TodoService} from "../services/todo-service";
 
 @Path('/todo')
 export class TodoResource {
 
+  constructor(private service: TodoService) {}
+
   @GET
   public getTodoList() {
-    return Todo.query()
+    return this.service.getAll();
   }
 
   @GET
   @Path('/:id')
   public getSingleTodo(@PathParam('id') id: string) {
-    return Todo.query()
-      .findById(Number(id));
+    return this.service.getOneById(Number(id));
   }
 
   @POST
   public createTodo(@RequestBody(Todo) todo: Todo) {
-    return Todo.query()
-      .insert(todo);
+    return this.service.create(todo);
   }
 
   @PUT
@@ -30,16 +29,13 @@ export class TodoResource {
     if (todo.id !== Number(id)) {
       throw {statusCode: 419, message: 'Conflict'};
     } else {
-      return todo.$query()
-        .updateAndFetch(todo);
+      return this.service.updateTodo(todo);
     }
   }
 
   @DELETE
   @Path('/:id')
   public deleteTodo(@PathParam('id') id: string) {
-
-    return Todo.query()
-      .deleteById(Number(id));
+    return this.service.removeById(Number(id));
   }
 }
